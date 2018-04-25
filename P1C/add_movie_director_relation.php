@@ -37,7 +37,7 @@
 				<!---------------------------------- Contents Cell---------------------------------->
 				<td valign="top">
 					<p>
-						<form action="add_movie_actor_relation.php" method="GET">
+						<form action="add_movie_director_relation.php" method="GET">
 													
 						<?php
 							//Connect to db ----------------------------------------------------------
@@ -67,19 +67,19 @@
 							echo '</select><br>';
 							mysqli_free_result($movie_data);
 
-							//Create query for actor list  ---------------------------------------------
+							//Create query for director list  ---------------------------------------------
 							$query="SELECT id, first, last, YEAR(dob) AS birth, YEAR(dod) AS death
-										FROM Actor
+										FROM Director
 										ORDER BY first, last";
 
-							$actor_data = mysqli_query($connection, $query) or die (mysqli_error($connection));
+							$director_data = mysqli_query($connection, $query) or die (mysqli_error($connection));
 
 							//Print movie list ---------------------------------------------------------
-							echo '<h3>Actor:</h3><br>';
-							echo '<select name="actor">';
+							echo '<h3>Director:</h3><br>';
+							echo '<select name="director">';
 
-							while ($row = mysqli_fetch_array($actor_data)) {
-								$aid = $row["id"];
+							while ($row = mysqli_fetch_array($director_data)) {
+								$did = $row["id"];
 								$first = $row["first"];
 								$last = $row["last"];
 								$dob = $row["birth"];
@@ -87,19 +87,17 @@
 								if ($dod == NULL)
 									$dod = "Present";
 
-								$actor_list = "<option value=\"$aid\">".$first." ".$last." (".$dob."~".$dod.") </option>";
+								$director_list = "<option value=\"$did\">".$first." ".$last." (".$dob."~".$dod.") </option>";
 
-								echo $actor_list;
+								echo $director_list;
 							}
-							echo '</select><br>';
+							echo '</select><br><br>';
 
-							mysqli_free_result($actor_data);
+							mysqli_free_result($director_data);
 							//------------------------------ PHP ENDS ------------------------------
 						?>
 
 
-						<h3>Role:</h3><br>
-						<input type="text" name="role" value="<?php echo htmlspecialchars($_GET['role']);?>" maxlength="35"><br>
 						<input type="submit" value="Add"/>
 
 						</form>
@@ -108,17 +106,16 @@
 						//Insert relation to database -----------------------------------------------
 						//Get inputs from above
 						$mid=$_GET["movie"];
-						$aid=$_GET["actor"];
-						$role=trim($_GET["role"]);
+						$did=$_GET["director"];
 
-						if ($role=="" || $mid=="" || $aid=="") {
-							die('You must select a movie, an actor, and type the role.');
+						if ($did=="" || $mid=="") {
+							die('You must select a movie and an director.');
 						}
 						else {
 							$role = mysqli_real_escape_string($connection, $role);
 
-							$query = "INSERT INTO MovieActor (mid, aid, role)
-										VALUES (".$mid.", ".$aid.", '".$role."')";
+							$query = "INSERT INTO MovieDirector (mid, did)
+										VALUES (".$mid.", ".$did.")";
 
 							$result = mysqli_query($connection, $query) or die (mysqli_error($connection));
 
