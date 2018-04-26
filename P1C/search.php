@@ -21,16 +21,11 @@
 					&nbsp;&nbsp;<a href="add_movie_info.php">Add Movie Information</a><br><br>
 					&nbsp;&nbsp;<a href="add_movie_actor_relation.php">Add Movie/Actor Relation</a><br><br>
 					&nbsp;&nbsp;<a href="add_movie_director_relation.php">Add Movie/Director Relation</a><br><br>
-					<br><br>
-
-					Browsering Content :<br><br>
-					&nbsp;&nbsp;<a href="show_actor_info.php">Show Actor Information</a><br><br>
-					&nbsp;&nbsp;<a href="show_movie_info.php">Show Movie Information</a><br><br>
+					&nbsp;&nbsp;<a href="add_review.php">Add Review for Movies</a><br><br>
 					<br><br>
 
 					Search Interface:<br><br>
 					&nbsp;&nbsp;<a href="search.php">Search Actor/Movie</a><br><br>
-
 					<br>
 				</td>
 
@@ -60,8 +55,8 @@
 						$length = count($terms);
 
 						//Create query for ACTOR search ------------------------------------------
-						$query="SELECT first AS First_Name, last AS Last_Name, 
-									dob AS Date_of_Birth, dod AS Date_of_Death
+						$query="SELECT id, first AS First_Name, last AS Last_Name, 
+									dob AS Date_of_Birth
 									FROM Actor 
 									WHERE
 									(first LIKE '%$terms[0]%' OR last LIKE '%$terms[0]%') ";
@@ -83,8 +78,12 @@
 						$i = 0;
 						while($i < mysqli_num_fields($result)) {
 							$col = mysqli_fetch_field($result);
+
 							//Print header in Bold
+							if ($col->name != 'id') {
 							echo '<td align="center"><b>' . $col->name . '</b></td>';
+							}
+							
 							$i = $i + 1;
 						}
 
@@ -92,13 +91,16 @@
 						while($row = mysqli_fetch_row($result)) {
 							echo '<tr align="center">';
 							$len = count($row);
+							$aid=$row[0];
 
-							for($j=0; $j<$len; $j++) {
+							for($j=1; $j<$len; $j++) {
 								$current_row = $row[$j];
 								if($current_row == NULL)
 									echo '<td>N/A</td>';
-								else
+								else {
+									$current_row = "<a href='show_actor.php?aid=".$aid."'>".$current_row."</a>";
 									echo '<td>' . $current_row . '</td>';
+								}
 							}
 
 							echo '</tr>';
@@ -107,7 +109,7 @@
 						echo '</table>';
 
 						//Create query for MOVIE search ------------------------------------------
-						$query="SELECT title AS Title, year AS Year, rating AS Rating
+						$query="SELECT id, title AS Title, year AS Year, rating AS Rating
 									FROM Movie 
 									WHERE
 									(title LIKE '%$terms[0]%')";
@@ -130,7 +132,10 @@
 						while($i < mysqli_num_fields($result)) {
 							$col = mysqli_fetch_field($result);
 							//Print header in Bold
+							if ($col->name != 'id') {
 							echo '<td align="center"><b>' . $col->name . '</b></td>';
+							}
+
 							$i = $i + 1;
 						}
 
@@ -138,13 +143,16 @@
 						while($row = mysqli_fetch_row($result)) {
 							echo '<tr align="center">';
 							$len = count($row);
+							$mid = $row[0];
 
-							for($j=0; $j<$len; $j++) {
+							for($j=1; $j<$len; $j++) {
 								$current_row = $row[$j];
 								if($current_row == NULL)
 									echo '<td>N/A</td>';
-								else
+								else {
+									$current_row = "<a href='show_movie.php?mid=".$mid."'>".$current_row."</a>";
 									echo '<td>' . $current_row . '</td>';
+								}
 							}
 
 							echo '</tr>';

@@ -21,16 +21,11 @@
 					&nbsp;&nbsp;<a href="add_movie_info.php">Add Movie Information</a><br><br>
 					&nbsp;&nbsp;<a href="add_movie_actor_relation.php">Add Movie/Actor Relation</a><br><br>
 					&nbsp;&nbsp;<a href="add_movie_director_relation.php">Add Movie/Director Relation</a><br><br>
-					<br><br>
-
-					Browsering Content :<br><br>
-					&nbsp;&nbsp;<a href="show_actor_info.php">Show Actor Information</a><br><br>
-					&nbsp;&nbsp;<a href="show_movie_info.php">Show Movie Information</a><br><br>
+					&nbsp;&nbsp;<a href="add_review.php">Add Review for Movies</a><br><br>
 					<br><br>
 
 					Search Interface:<br><br>
 					&nbsp;&nbsp;<a href="search.php">Search Actor/Movie</a><br><br>
-
 					<br>
 				</td>
 
