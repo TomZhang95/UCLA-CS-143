@@ -4,38 +4,45 @@
 	<head> 
 		<meta charset="utf-8"> 
 		<title>Project 1C Movie Database</title> 
+		<link rel="stylesheet" href="style.css">
 	</head>
 
 	<body>
-		<table border="1" style="width:100%; height:100%">
+		<table cellspacing="0" cellpadding="0" style="width:100%; height:100%">
 			<tr>
-				<td style="background-color:Black;" colspan="2">
-					<h1 style="color:White"> Movie Database </h1>
+				<td style="background-color:#2D70AE;" colspan="2">
+					<center><mark class="h1title2">movie</mark><mark class="h1title">Base</mark></center>
+					<center><mark class="italicwhite">#1 database movies by Reinaldo Daniswara and Tianyang Zhang</mark></center>
 				</td>
 			</tr>
 			<!---------------------------------- Left Cell---------------------------------->
 			<tr>
-				<td style="background-color:AliceBlue;width:200px;vertical-align:top;">
-					Add New Content<br><br>
-					&nbsp;&nbsp;<a href="add_actor_director.php">Add Actor/Director</a><br><br>
-					&nbsp;&nbsp;<a href="add_movie_info.php">Add Movie Information</a><br><br>
-					&nbsp;&nbsp;<a href="add_movie_actor_relation.php">Add Movie/Actor Relation</a><br><br>
-					&nbsp;&nbsp;<a href="add_movie_director_relation.php">Add Movie/Director Relation</a><br><br>
-					&nbsp;&nbsp;<a href="add_review.php">Add Review for Movies</a><br><br>
+				<td style="background-color:#F6FBFD ;width:200px;vertical-align:top;">
+					<mark class="leftorder">Add New Content:</mark><br>
+					<ul>
+						<li><a href="add_actor_director.php">Add Actor/Director</a>
+						<li><a href="add_movie_info.php">Add Movie Information</a>
+						<li><a href="add_movie_actor_relation.php">Add Movie/Actor Relation</a>
+						<li><a href="add_movie_director_relation.php">Add Movie/Director Relation</a>
+						<li><a href="add_review.php">Add Review for Movies</a>
+					</ul>	
+					
 					<br><br>
 
-					Search Interface:<br><br>
-					&nbsp;&nbsp;<a href="search.php">Search Actor/Movie</a><br><br>
+					Search Interface:<br>
+					<ul>
+						<li><a href="search.php">Search Actor/Movie</a><br><br>
+					</ul>
 					<br>
 				</td>
 
 				<!---------------------------------- Contents Cell---------------------------------->
 				<td valign="top">
-					<b> Search Actor/Movie: </b><br>
+					<mark class="cellcontent">Search Actor/Movie: </mark><br>
 					<p>
 						<form action="search.php" method="GET">
 						
-							<input type="text" name="input" value="<?php echo htmlspecialchars($_GET['input']);?>" maxlength="35"><br/>		
+							<input type="text" placeholder="search here..." name="input" value="<?php echo htmlspecialchars($_GET['input']);?>" maxlength="35"><br/>		
 							<input type="submit" value="Search"/>
 						</form>
 					</p>

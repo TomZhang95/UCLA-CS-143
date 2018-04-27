@@ -4,28 +4,35 @@
 	<head> 
 		<meta charset="utf-8"> 
 		<title>Project 1C Movie Database</title> 
+		<link rel="stylesheet" href="style.css">
 	</head>
 
 	<body>
-		<table border="1" style="width:100%; height:100%">
+		<table cellspacing="0" cellpadding="0" style="width:100%; height:100%">
 			<tr>
-				<td style="background-color:Black;" colspan="2">
-					<h1 style="color:White"> Movie Database </h1>
+				<td style="background-color:#2D70AE;" colspan="2">
+					<center><mark class="h1title2">movie</mark><mark class="h1title">Base</mark></center>
+					<center><mark class="italicwhite">#1 database movies by Reinaldo Daniswara and Tianyang Zhang</mark></center>
 				</td>
 			</tr>
 			<!---------------------------------- Left Cell---------------------------------->
 			<tr>
-				<td style="background-color:AliceBlue;width:200px;vertical-align:top;">
-					Add New Content<br><br>
-					&nbsp;&nbsp;<a href="add_actor_director.php">Add Actor/Director</a><br><br>
-					&nbsp;&nbsp;<a href="add_movie_info.php">Add Movie Information</a><br><br>
-					&nbsp;&nbsp;<a href="add_movie_actor_relation.php">Add Movie/Actor Relation</a><br><br>
-					&nbsp;&nbsp;<a href="add_movie_director_relation.php">Add Movie/Director Relation</a><br><br>
-					&nbsp;&nbsp;<a href="add_review.php">Add Review for Movies</a><br><br>
+				<td style="background-color:#F6FBFD ;width:200px;vertical-align:top;">
+					<mark class="leftorder">Add New Content:</mark><br>
+					<ul>
+						<li><a href="add_actor_director.php">Add Actor/Director</a>
+						<li><a href="add_movie_info.php">Add Movie Information</a>
+						<li><a href="add_movie_actor_relation.php">Add Movie/Actor Relation</a>
+						<li><a href="add_movie_director_relation.php">Add Movie/Director Relation</a>
+						<li><a href="add_review.php">Add Review for Movies</a>
+					</ul>	
+					
 					<br><br>
 
-					Search Interface:<br><br>
-					&nbsp;&nbsp;<a href="search.php">Search Actor/Movie</a><br><br>
+					Search Interface:<br>
+					<ul>
+						<li><a href="search.php">Search Actor/Movie</a><br><br>
+					</ul>
 					<br>
 				</td>
 
@@ -39,31 +46,31 @@
 						Movie Title:	<br/>
 									<select name="id">
 										<?php
-									//establish connection with the MySQL database
-									$db_connection = mysqli_connect("127.0.0.1", "cs143", "") or die(mysqli_connect_error());
+									//create connection with database for movie selection
+									$connection = mysqli_connect("127.0.0.1", "cs143", "") or die(mysqli_connect_error());
+									mysqli_select_db($connection, "CS143");
+
+									//display movie into dropdown
+									$movie_query = "SELECT id, title, year FROM Movie ORDER BY title ASC";
+									$movie_result=mysqli_query($connection, $movie_query) or die(mysqli_error($connection));
+									$movie_opt="";
 									
-									//choose database to use
-									mysqli_select_db($db_connection, "CS143");
-									//select all movie ids, titles, and years and place as options into dropdown
-									$movieRS=mysqli_query($db_connection, "SELECT id, title, year FROM Movie ORDER BY title ASC") or die(mysqli_error($db_connection));
-									$movieOptions="";
+									$get_ID=$_GET['id'];
 									
-									$urlID=$_GET['id'];
-									
-									while ($row=mysqli_fetch_array($movieRS))
+									while ($row=mysqli_fetch_array($movie_result))
 									{
 										$id=$row["id"];
 										$title=$row["title"];
 										$year=$row["year"];
 										
 										//if movie ID matches the GET id specified in the URL, select that option by default
-										if($id==$urlID)
-											$movieOptions.="<option value=\"$id\" selected>".$title." [".$year."]</option>";
+										if($id==$get_ID)
+											$movie_opt.="<option value=\"$id\" selected>".$title." [".$year."]</option>";
 										else
-											$movieOptions.="<option value=\"$id\">".$title." [".$year."]</option>";	
+											$movie_opt.="<option value=\"$id\">".$title." [".$year."]</option>";	
 									}
 										?>
-									<?=$movieOptions?>
+									<?=$movie_opt?>
 								</select><br/></br>
 							Rating:	<br/> <select name="rating">
 								<option value="10"> 100% </option>
@@ -77,58 +84,35 @@
 								<option value="2"> 20% </option>
 								<option value="1"> 10% </option>
 							</select><br/><br/>
-							Comments: <br/><textarea name="comment" cols="80" rows="10" value=><?php echo htmlspecialchars($_GET['comment']);?></textarea><br/>
+							Comments: <br/><textarea name="comment" placeholder="Your comment" value=><?php echo htmlspecialchars($_GET['comment']);?></textarea><br/>
 							<br/>
-							Reviewer Name:	<input type="text" name="name" value="<?php echo htmlspecialchars($_GET['name']);?>" maxlength="20"><br/><br/>
+							Reviewer Name:	<input type="text" placeholder="Your Name" name="name" value="<?php echo htmlspecialchars($_GET['name']);?>" maxlength="20"><br/><br/>
 							<input type="submit" value="Submit Review"/>
 							</form>
 
 					</p>
 		<?php
 		
-		//get the user's inputs
-		$dbName=trim($_GET["name"]);
-		$dbMovie=$_GET["id"];
-		$dbRating=$_GET["rating"];
-		$dbComment=trim($_GET["comment"]);
+		//receive the input
+		$get_name=trim($_GET["name"]);
+		$get_movieID=$_GET["id"];
+		$get_rating=$_GET["rating"];
+		$get_comment=trim($_GET["comment"]);
 		
-		//pass in user inputs
-		if($dbName=="" && $dbMovie=="" && $dbRating=="" && $dbComment=="")
-		{
-			//don't display a message, since no insert attempt was made (or the page just loaded)
-		}
-		else if($dbMovie=="")
-		{
-			echo "You must select a movie from the list.";
-		}
-		else if ($dbRating=="" || $dbRating>10 || $dbRating<1)
-		{
-			echo "You must select a valid rating.";
-		}
-		else //if we have reached this clause, no errors were found; process the query normally
+		if($get_name=="" && $get_movieID=="" && $get_rating=="" && $get_comment==""){}
+		else
 		{
 			//if reviewer left name blank, show as Anonymous
-			if($dbName=="")
-				$dbName = "Anonymous";
+			if($get_name=="")
+				$get_name = "Unknown";
 			
-			//escape single-quotes in the inputs to make sure it doesn't break the string up
-			// $dbName = mysql_escape_string($dbName);
-			// $dbMovie = mysql_escape_string($dbMovie);
-			// $dbComment = mysql_escape_string($dbComment);
+			$query = "INSERT INTO Review (name, time, mid, rating, comment) VALUES('$get_name', now(), '$get_movieID', '$get_rating', '$get_comment')";
+			$result = mysqli_query($connection, $query) or die(mysql_error($connection));
 			
-			$dbQuery = "INSERT INTO Review (name, time, mid, rating, comment) VALUES('$dbName', now(), '$dbMovie', '$dbRating', '$dbComment')";
-						
-			//issue a query using database connection
-			//if query is erroneous, produce error message "gracefully"
-			$rs = mysqli_query($db_connection, $dbQuery) or die(mysql_error($db_connection));
-			
-			//present a success message`
-			echo "Thanks! Movie review added successfully.<br/>";
-			//echo "<a href=\"showMovieInfo.php?id=".$dbMovie."\">Back to Movie</a>";
+			echo "Thank You! Your review has been added.<br/>";
+			// document.forms['comment_form'].reset();
 		}
-		
-		//close the database connection
-		mysqli_close($db_connection);
+		mysqli_close($connection);
 	?>
 				</td>
 			</tr>
