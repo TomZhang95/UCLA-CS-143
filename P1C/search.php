@@ -55,7 +55,7 @@
 						$s = mysqli_real_escape_string($connection, $input);
 
 						if ($s == "")
-							die("Input is empty!");
+							die("");
 
 						$terms=explode(' ', $s);
 

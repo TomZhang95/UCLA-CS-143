@@ -37,7 +37,7 @@
 				</td>
 				<!---------------------------------- Contents Cell---------------------------------->
 				<td valign="top">
-					<h2> Actor Information: </h2><br>
+					<h2> Movie Information: </h2><br>
 
 					<?php
 						//Connect to db ----------------------------------------------------------
@@ -58,9 +58,9 @@
 						echo '<b>Year: </b>'.$row[1].'<br>';
 
 						if ($row[2] == NULL)
-							echo '<b>Rating: </b> N/A <br>';
+							echo '<b>MPAA: </b> N/A <br>';
 						else
-							echo '<b>Rating: </b> '.$row[2].'<br>';
+							echo '<b>MPAA: </b> '.$row[2].'<br>';
 
 						if ($row[3] == NULL)
 							echo '<b>Company: </b> N/A <br>';
@@ -109,6 +109,41 @@
 						<input type="text" name="input" value="<?php echo htmlspecialchars($_GET['input']);?>" maxlength="35"><br/>		
 						<input type="submit" value="Search"/>
 					</form>
+
+
+					<h2>Comments and User Rating:</h2><br>
+					<?php
+					$rating_query = "SELECT avg(rating)
+							FROM Review
+							WHERE mid='$mid'";
+
+					$rating_data = mysqli_query($connection, $rating_query) or die (mysqli_error($connection));
+
+					$row = mysqli_fetch_array($rating_data);
+
+					$avg = $row[0];
+
+					echo '<font color="2D70AE">Average Rating '. (int)$avg .' Stars</font><br><br>'; 
+
+					$comment_query = "SELECT name, time, rating, comment
+										FROM Review 
+										WHERE mid='$mid'";
+					$comment_data = mysqli_query($connection, $comment_query) or die (mysqli_error($connection));
+
+					while ($row = mysqli_fetch_array($comment_data)) {
+						$name = $row[0];
+						$time = $row[1];
+						$rating = $row[2];
+						$comment = $row[3];
+
+						echo '<font color="2D70AE">'. $name .':</font><br>';
+						echo 'Rating: '. $rating . ' Stars<br>';
+						echo $time . '<br>';
+						echo $comment.'<br><br>';
+
+					}
+
+					?>
 					<br>
 				</td>
 			</tr>
