@@ -123,7 +123,7 @@
 
 					$avg = $row[0];
 
-					echo '<font color="2D70AE">Average Rating '. (int)$avg .' Stars</font><br><br>'; 
+					echo '<font color="2D70AE">Average Rating '. number_format((int)$avg, 1) .' Stars</font><br><br>'; 
 
 					$comment_query = "SELECT name, time, rating, comment
 										FROM Review 
