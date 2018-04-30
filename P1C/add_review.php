@@ -73,16 +73,16 @@
 									<?=$movie_opt?>
 								</select><br/></br>
 							Rating:	<br/> <select name="rating">
-								<option value="10"> 100% </option>
-								<option value="9"> 90% </option>
-								<option value="8"> 80% </option>
-								<option value="7"> 70% </option>
-								<option value="6"> 60% </option>
-								<option value="5"> 50% </option>
-								<option value="4"> 40% </option>
-								<option value="3"> 30% </option>
-								<option value="2"> 20% </option>
-								<option value="1"> 10% </option>
+								<option value="10"> 10 </option>
+								<option value="9"> 9 </option>
+								<option value="8"> 8 </option>
+								<option value="7"> 7 </option>
+								<option value="6"> 6 </option>
+								<option value="5"> 5 </option>
+								<option value="4"> 4 </option>
+								<option value="3"> 3 </option>
+								<option value="2"> 2 </option>
+								<option value="1"> 1 </option>
 							</select><br/><br/>
 							Comments: <br/><textarea name="comment" placeholder="Your comment" value=><?php echo htmlspecialchars($_GET['comment']);?></textarea><br/>
 							<br/>
