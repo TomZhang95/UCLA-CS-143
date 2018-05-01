@@ -38,7 +38,7 @@
 
 				<!---------------------------------- Contents Cell---------------------------------->
 				<td valign="top">
-					<b> Add Review for Movies: </b><br>
+					<mark class="cellcontent"> Add Review for Movies: </mark><br>
 					<p>
 						<form action="add_review.php" method="GET">
 							

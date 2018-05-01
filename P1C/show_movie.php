@@ -37,7 +37,7 @@
 				</td>
 				<!---------------------------------- Contents Cell---------------------------------->
 				<td valign="top">
-					<h2> Movie Information: </h2><br>
+					<mark class="cellcontent"> Movie Information: </mark><br>
 
 					<?php
 						//Connect to db ----------------------------------------------------------
@@ -45,7 +45,7 @@
 						mysqli_select_db($connection, "CS143");
 						$mid = $_GET["mid"];
 
-						//Create query for ACTOR info ------------------------------------------
+						//Create query for MOVIE info ------------------------------------------
 						$query="SELECT title, year, rating, company
 									FROM Movie 
 									WHERE
@@ -67,12 +67,45 @@
 						else
 							echo '<b>Company: </b> '.$row[3].'<br>';
 
+						//Create query for Direcotor name ------------------------------------------
+
+						$query = "SELECT did
+									FROM MovieDirector
+									WHERE mid = '$mid'";
+
+						$director_data = mysqli_query($connection, $query) or die (mysqli_error($connection));
+
+						$row = mysqli_fetch_row($director_data);
+
+						$did = $row[0];
+
+						$query = "SELECT first, last
+									FROM Director
+									WHERE id = '$did'";
+
+						$director_data = mysqli_query($connection, $query) or die (mysqli_error($connection));
+
+						$row = mysqli_fetch_row($director_data);
+
+						echo '<b>Director: </b> '.$row[0].' '.$row[1].'<br>';
+
+						//Create query for Genre info ------------------------------------------
+						$query = "SELECT genre
+									FROM MovieGenre
+									WHERE mid = '$mid'";
+
+						$director_data = mysqli_query($connection, $query) or die (mysqli_error($connection));
+
+						$row = mysqli_fetch_row($director_data);
+
+						echo '<b>Genre: </b> '.$row[0].'<br>';
+
 						//------------------------------ PHP ENDS ------------------------------
 					?>
 
 					<br><br>
 
-					<h2>Actors in Movie:</h2><br>
+					<mark class="cellcontent">Actors in Movie:</mark><br>
 
 					<?php
 					//Get and print role and movie info ----------------------------------------
@@ -103,7 +136,7 @@
 					//------------------------------ PHP ENDS ------------------------------
 					?>
 
-					<h2>Search Actor/Movie:</h2><br>
+					<mark class="cellcontent">Search Actor/Movie:</mark><br>
 
 					<form action="search.php" method="GET">
 						<input type="text" name="input" value="<?php echo htmlspecialchars($_GET['input']);?>" maxlength="35"><br/>		
@@ -111,7 +144,10 @@
 					</form>
 
 
-					<h2>Comments and User Rating:</h2><br>
+					<mark class="cellcontent">Comments and User Rating:</mark><br><br>
+
+					<a href="add_review.php"><font color="2D70AE">Write Your Comment Here</font></a><br><br>
+
 					<?php
 					$rating_query = "SELECT avg(rating)
 							FROM Review
